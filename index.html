@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Recipe Finder</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f7f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 50px 20px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      width: 300px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    pre#output {
+      background-color: #fff;
+      padding: 20px;
+      margin-top: 30px;
+      width: 80%;
+      max-width: 700px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      font-size: 16px;
+      color: #333;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <h1>Recipe Finder</h1>
+  <input type="text" id="ingredients" placeholder="Enter ingredients (comma separated)" />
+  <button onclick="fetchRecipes()">Get Recipes</button>
+
+  <pre id="output" style="white-space: pre-wrap; margin-top: 20px;"></pre>
+
+  <script>
+    async function fetchRecipes() {
+      let output = document.getElementById('output');
+      output.textContent = '...Loading';
+      const ingredients = document.getElementById('ingredients').value;
+      const response = await fetch(`http://localhost:5000/recipes?ingredients=${encodeURIComponent(ingredients)}`);
+      const data = await response.json();
+      console.log(data);
+      output.textContent = data.success ? data.data : data.error;
+    }
+  </script>
+</body>
+</html>
